@@ -212,10 +212,39 @@ cncserver.paths = {
                 var seg = $path[0].pathSegList.getItem(checkSeg);
                 if (seg.pathSegTypeAsLetter.toLowerCase() === "m") {
                   subPathCount++;
-                  run('status', 'Drawing subpath #' + subPathCount);
-                  run('up');
-                  run('move', p);
-                  run('down');
+                  if (options.reloadwhen == 1) {
+                    // reload after each path (now)
+                    run('status', 'Getting paint then drawing subpath #' + subPathCount);
+                    run('up');
+                    switch (options.reloadhow) {
+                        case 0:
+                            run('getpaintfull');
+                            break;
+                        case 1:
+                            run('getwaterpaintdip');
+                            break;
+                        case 2:
+                            run('getpaintdip');
+                            break;
+                        case 3:
+                            run('getwaterpaintdoubledip');
+                            break;
+                        case 4:
+                            run('getpaintdoubledip');
+                            break;
+                        default:
+                            run('getpaintfull');
+                            break;
+                    }
+                    run('move', p);
+                    run('down');
+                  } else {
+                    // reload after distance
+                    run('status', 'Drawing subpath #' + subPathCount);
+                    run('up');
+                    run('move', p);
+                    run('down');
+                  }
                   break;
                 }
               }
