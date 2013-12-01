@@ -97,7 +97,7 @@
       <div>
         <label for="penmode">Painting/Drawing Mode:</label>
         <select id="penmode">
-          <option value="0">Default (Brush, Water & Paint)</option>
+          <option value="0">Default (Brush, Water &amp; Paint)</option>
           <option value="1">Water Only (No Paint: Buddha Board)</option>
           <option value="2">Paint Only (No Water: Non-watercolors)</option>
           <option value="3">No Water or Paint (Pen/Pencil mode)</option>
@@ -116,12 +116,6 @@
       </div>
 
       <hr>
-
-      <div>
-        <label for="maxpaintdistance">Refill Distance:</label>
-        <input type="range" title="Move left to get paint more often, right to get paint less often" id="maxpaintdistance" min="500" max="20000" />
-        <aside>The distance for the brush to paint on the paper before it should go get more water/paint on the brush. Default is <b>48cm / 19in</b>.</aside>
-      </div>
 
       <div>
         <label for="strokeprecision">Stroke Precision:</label>
@@ -148,6 +142,34 @@
         </select>
         <aside>The distance factor to move the brush beyond when lifting to make up for brush bend. Default is <b>5mm</b>.</aside>
       </div>
+    </fieldset>
+
+    <fieldset class="paintreloading">
+        <legend>Paint Reloading</legend>
+        <aside>Choose when and how to go get more water/paint on the brush while painting with brushes.</aside>
+        </br>
+        <label for="reloadwhen">Reload when:</label>
+        <select id="reloadwhen">
+            <option value="0">After a certain distance</option>
+            <option value="1">After each path</option>
+        </select>
+        <aside>Reload after a certain distance or after each path. Using distance is more efficient, but causes interrupted paths. After each path is slower, but makes continuous strokes. Default is <b>After a certain distance</b>.</aside>
+        </br>
+        <label for="reloadhow">Reload how:</label>
+        <select id="reloadhow">
+            <option value="0">Full reload</option>
+            <option value="1">Single dip (1 water &plus; 1 paint)</option>
+            <option value="2">Single dip (just paint)</option>
+            <option value="3">Double dip (1 water &plus; 2 paint)</option>
+            <option value="4">Double dip (just paint)</option>
+        </select>
+        <aside>Reload by doing a full reload, single or double dips, with or without water. Use a full reload if using long distance reloads or lots of long paths. Dipping is best for short distance reloads or short paths. Default is <b>Full reload</b>.</aside>
+        <hr>
+        <div>
+            <label for="maxpaintdistance">Refill Distance:</label>
+            <input type="range" title="Move left to get paint more often, right to get paint less often" id="maxpaintdistance" min="500" max="20000" />
+            <aside>If using distance, this is how far it should paint on the paper before reloading. Default is <b>48cm / 19in</b>.</aside>
+        </div>
     </fieldset>
 
     <fieldset>

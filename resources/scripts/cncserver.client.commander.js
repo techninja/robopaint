@@ -40,11 +40,43 @@ cncserver.cmd = {
 
       // Check for paint refill
       if (!cncserver.state.process.paused) {
-        if (cncserver.state.pen.distanceCounter > robopaint.settings.maxpaintdistance) {
+          // Check if using reload after distance, and if we've passed the max
+          if ( (robopaint.settings.reloadwhen == 0) && (cncserver.state.pen.distanceCounter > robopaint.settings.maxpaintdistance) ) {
           var returnPoint = returnPoints[returnPoints.length-1] ? returnPoints[returnPoints.length-1] : lastPoint;
+              
+          ////////////////////////////////////////////////////
+          // TODO: this switch should be implemented here!
+          ////////////////////////////////////////////////////
+          /*
+           switch (robotpaint.settings.reloadhow) {
+           case 0:
+           run('getpaintfull');
+           break;
+           case 1:
+           run('getwaterpaintdip');
+           break;
+           case 2:
+           run('getpaintdip');
+           break;
+           case 3:
+           run('getwaterpaintdoubledip');
+           break;
+           case 4:
+           run('getpaintdoubledip');
+           break;
+           default:
+           run('getpaintfull');
+           break;
+           }
+           */
+          ////////////////////////////////////////////////////
+          // instead of the following
+          ////////////////////////////////////////////////////
+
           cncserver.wcb.getMorePaint(returnPoint, function(){
             cncserver.api.pen.down(cncserver.cmd.executeNext);
           });
+              
         } else {
           // Execute next command
           cncserver.cmd.executeNext();
@@ -101,6 +133,17 @@ cncserver.cmd = {
       case "custom":
         cncserver.cmd.cb();
         if (next[1]) next[1](); // Run custom passed callback
+        break;
+      case "getpaintfull":
+        cncserver.wcb.getMorePaint(next[1],cncserver.cmd.cb);
+        break;
+      case "getwaterpaintdip":
+      case "getwaterpaintdoubledip":
+        // TODO: water + paint dips
+        break;
+      case "getpaintdip":
+      case "getpaintdoubledip":
+        // TODO: just paint dip
         break;
       default:
         console.debug('Queue shortcut not found:' + next[0]);

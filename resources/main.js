@@ -540,7 +540,9 @@ function loadSettings() {
     tsprunnertype: 'OPT',
     strokeprecision: 6,
     manualpaintenable: 0,
-    gapconnect: 1
+    gapconnect: 1,
+    reloadwhen: 0,
+    reloadhow: 0
   };
 
   // Are there existing settings from a previous run? Mesh them into the defaults
