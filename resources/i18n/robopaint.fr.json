@@ -164,7 +164,7 @@
         "opt1": "Ligne triangulaire",
         "opt2": "Sinusoïde",
         "opt3": "Spirale",
-        "opt3": "n'importe quoi"
+        "opt4": "n'importe quoi"
       },
       "linefilltitle": "Remplissage entre les lignes",
       "fillangle": {
