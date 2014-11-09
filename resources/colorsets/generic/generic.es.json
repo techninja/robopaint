@@ -1,0 +1,21 @@
+[{
+  "type": "Generic",
+  "name": "Standard",
+  "media": "watercolor",
+  "weight": -10,
+  "description": "Los colores primarios...",
+  "styles" : {
+    "src" : "standard.css",
+    "baseClass": "generic-standard"
+  },
+  "colors": [
+    {"Negro": "#000000"},
+    {"Rojo": "#FF0000"},
+    {"Naranja": "#FFA500"},
+    {"Amarillo": "#FFFF00"},
+    {"Verde": "#008000"},
+    {"Azul": "#0000FF"},
+    {"Violeta": "#800080"},
+    {"Marrón": "#8B4513"}
+  ]
+}]
