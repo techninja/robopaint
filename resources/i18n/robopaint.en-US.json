@@ -54,7 +54,7 @@
     "title": "Remote Print Mode",
     "icontitle": {
       "from": "From the Client Application",
-      "through": "Through the Interwebs or your local network",
+      "through": "Through the Internet or your local network",
       "to": "To your very own bot!"
     },
     "details": {
