@@ -1,0 +1,248 @@
+{
+  "_meta": {
+    "creator": "docprofsky", 
+    "target": "pt",
+    "release": "0.9.2"
+  },
+  "common": {
+    "pause": "Pausa",
+    "resume": "Curr\u00edculo",
+    "stop": "Pare",
+    "time": {
+      "ms": "senhorita",
+      "sec": "sec",
+      "seconds": "segundos"
+    },
+    "metric": {
+      "mm": "mm",
+      "cm": "cm"
+    },
+    "imperial": {
+      "in": "em"
+    }
+  },
+  "status": {
+    "start": "Iniciando-se ...",
+    "found": "Porto encontrados, conectando ...",
+    "question": "O que voc\u00ea quer fazer?",
+    "error": "N\u00e3o foi poss\u00edvel conectar!",
+    "success": "Conectado!",
+    "disconnect": "Bot Desconectado!",
+    "button": {
+      "continue": "Continuar no modo de Simula\u00e7\u00e3o",
+      "retry": "Tentar se reconectar"
+    }
+  },
+  "nav": {
+    "toolbar": {
+      "home": "Home Screen",
+      "edit": "Abrir, redimensionar e editar arte vetorial existente.",
+      "open": "Abra um projeto exemplo",
+      "printauto": "Modo de impress\u00e3o: Imprima o desenho!",
+      "printmanual": "Modo Manual: Personalize sua impress\u00e3o",
+      "help": "Socorro! (Open web docs)",
+      "settings": "Defini\u00e7\u00f5es",
+      "version": "v"
+    },
+    "bubble": {
+      "edit": "Criar",
+      "printauto": "Impress\u00e3o",
+      "printmanual": "Manual"
+    }
+  },
+  "remoteprint": {
+    "title": "Modo de impress\u00e3o remota",
+    "icontitle": {
+      "from": "A partir da aplica\u00e7\u00e3o do cliente",
+      "through": "Atrav\u00e9s da Internet ou rede local",
+      "to": "Para o seu pr\u00f3prio bot!"
+    },
+    "details": {
+      "title": "Detalhes / Controles:",
+      "exit": {
+        "text": "Sair do modo de impress\u00e3o remota",
+        "title": "Anular as opera\u00e7\u00f5es atuais e sair deste modo."
+      }
+    },
+    "api": {
+      "disabled": "A API de importa\u00e7\u00e3o SVG est\u00e1 atualmente desativado. Ative-o nas configura\u00e7\u00f5es e, em seguida, clique no bot\u00e3o na GUI RoboPaint.",
+      "busy": "N\u00e3o \u00e9 poss\u00edvel adicionar a fila durante a tarefa de impress\u00e3o em curso.",
+      "queued": "Na fila de impress\u00e3o ...",
+      "wait": "Esperando para o projeto do cliente ..."
+    },
+    "confirms": {
+      "welcome": "Ol\u00e1, bem-vindo ao modo de impress\u00e3o remota! Este modo vai virar RoboPaint em \"servidor de impress\u00e3o\" de gr\u00e1ficos, pronto para tomar uma imagem de outro aplicativo e imprimi-lo imediatamente!\n\n* As imagens enviadas somente ser\u00e3o recebidos durante este modo est\u00e1 em\n\n* Uma vez que uma imagem for conclu\u00eddo, este modo vai sair\n\n* Antes de clicar em OK, verifique se o bot \u00e9 completamente configurado e pronto para ir!\n\n* Clique em Cancelar se voc\u00ea n\u00e3o est\u00e1 completamente pronto para ir. Voc\u00ea tamb\u00e9m pode sair a qualquer momento enquanto estiver no modo de impress\u00e3o remota",
+      "exit": "Tem certeza de que deseja sair do modo de impress\u00e3o remota?\n\n Os processos de impress\u00e3o e aplica\u00e7\u00f5es do cliente ser\u00e1 cancelada / desconectado."
+    }
+  },
+  "settings": {
+    "lang": {
+      "title": "Selecione um Idioma:",
+      "name": "Ingl\u00eas"
+    },
+    "tabs": {
+      "output": "Estilo de impress\u00e3o",
+      "common": "Configura\u00e7\u00e3o b\u00e1sica",
+      "advanced": "Avan\u00e7ado"
+    },
+    "buttons": {
+      "reset": {
+        "title": "Restabelecer",
+        "hover": "Reverter todas as predefini\u00e7\u00f5es",
+        "confirm": "Redefinir todas as configura\u00e7\u00f5es para os padr\u00f5es de f\u00e1brica?"
+      },
+      "done": {
+        "title": "Feito",
+        "hover": "Feche a janela de configura\u00e7\u00f5es"
+      }
+    },
+    "output": {
+      "generaltitle": "Geral",
+      "move": {
+        "title": "Movimento Velocidade do Carro:",
+        "up": "... Enquanto escova \u00e9 Up:",
+        "hint": "Mover para a esquerda para mais lento, ideal para mais r\u00e1pido.",
+        "down": "... Enquanto escova \u00e9 Down:",
+        "speed0": "Pincel em um caracol",
+        "speed1": "Dolorosamente lento",
+        "speed2": "M\u00e9dio",
+        "speed3": "R\u00e1pido (padr\u00e3o)",
+        "speed4": "Est\u00fapido r\u00e1pido!"
+      },
+      "penmode": {
+        "title": "Modo de impress\u00e3o:",
+        "opt0": "Padr\u00e3o (Brush, Water & Paint)",
+        "opt1": "\u00c1gua Only (No Paint: Buddha Board)",
+        "opt2": "Pinte apenas (sem \u00e1gua: N\u00e3o-aquarelas)",
+        "opt3": "N\u00e3o h\u00e1 \u00e1gua ou Paint (modo Pen / Pencil)",
+        "warningPaint": "Tinta necess\u00e1rio. Modo de impress\u00e3o incompat\u00edveis com essa configura\u00e7\u00e3o.",
+        "warningAll": "\u00c1gua / pintura requerido. Modo de impress\u00e3o incompat\u00edveis com essa configura\u00e7\u00e3o."
+      },
+      "showcolortext": {
+        "title": "Mostrar nomes de cor:",
+        "detail": "Quando selecionado, nomes de cores ser\u00e1 exibida na paleta de pintura para as cores de impress\u00e3o, caso contr\u00e1rio, eles s\u00f3 ser\u00e3o vis\u00edveis no hover."
+      },
+      "colorsets": {
+        "title": "Cor Instalada Set:",
+        "media": "M\u00eddia:",
+        "name": "Nome:",
+        "desc": "Descri\u00e7\u00e3o:",
+        "type": "Tipo / Fabricante:",
+        "add": "+ Adicionar Set personalizado"
+      },
+      "maxpaintdistance": {
+        "title": "Recarga Dist\u00e2ncia:",
+        "hint": "Mover para a esquerda para chegar pintar mais vezes, direito de obter pintar com menos frequ\u00eancia.",
+        "detail": "A dist\u00e2ncia para o pincel para pintar no papel antes que ele deveria ir buscar mais \u00e1gua / tinta no pincel. O padr\u00e3o \u00e9 ** 48,2 cent\u00edmetros / 19in **."
+      },
+      "strokeprecision": {
+        "title": "Curso Precis\u00e3o:",
+        "opt0": "Uber Belas [lento] (1)",
+        "opt1": "Very Fine (2)",
+        "opt2": "Fine (4)",
+        "opt3": "Padr\u00e3o (6)",
+        "opt4": "Grosseiro (10)",
+        "opt5": "Muito grosseira [r\u00e1pida] (15)",
+        "detail": "Como com precis\u00e3o os contornos s\u00e3o re-rastreada para ser impresso. Menor valor de precis\u00e3o = mais detalhes, mas mais tempo de processamento / impress\u00e3o."
+      },
+      "strokeovershoot": {
+        "title": "Curso Overshoot:",
+        "opt0": "Nenhum (0)",
+        "opt1": "Min\u00fasculo (2mm)",
+        "opt2": "M\u00e9dio (5mm)",
+        "opt3": "Longer (8mm)",
+        "opt4": "Caramba (13mm)",
+        "opt5": "In\u00fateis (20mm)",
+        "detail": "O fator de dist\u00e2ncia para mover o pincel al\u00e9m ao levantar para compensar escova curva. O padr\u00e3o \u00e9 5 mil\u00edmetros ** **."
+      },
+      "filltitle": "Preencher",
+      "filltype": {
+        "title": "Tipo:",
+        "opt0": "Reta",
+        "opt1": "Linha Triangle",
+        "opt2": "Linha Sine",
+        "opt3": "Centro de espiral",
+        "opt4": "TSP Rabisco"
+      },
+      "linefilltitle": "Line / portal Fills",
+      "fillangle": {
+        "title": "Angle Line:",
+        "opt0": "Horizontal (0 \u00b0)",
+        "opt1": "Diagonal (45 \u00b0)",
+        "opt2": "Vertical (90 \u00b0)"
+      },
+      "fillspacing": {
+        "title": "Espa\u00e7amento entre linhas:",
+        "opt0": "Miniscule (1)",
+        "opt1": "Min\u00fasculo (5)",
+        "opt2": "Padr\u00e3o (10)",
+        "opt3": "Meio (15)",
+        "opt4": "Amplo (25)",
+        "opt5": "Espa\u00e7oso (40)"
+      },
+      "fillprecision": {
+        "title": "Preencha Precision:",
+        "opt0": "Uber Belas (1)",
+        "opt1": "Very Fine (3)",
+        "opt2": "Fine (7)",
+        "opt3": "Padr\u00e3o (14)",
+        "opt4": "Grosseiro (21)",
+        "opt5": "Muito grossa (35)"
+      },
+      "gapconnect": {
+        "title": "Conecte-se pequenas lacunas:",
+        "detail": "Faz frente e para tr\u00e1s enche mais suave, n\u00e3o levantando pincel nas bordas."
+      }
+    },
+    "common": {
+      "servo": {
+        "title": "Escova-lift (servo) Motor",
+        "up": "Up Posi\u00e7\u00e3o:",
+        "paint": "Posi\u00e7\u00e3o de Impress\u00e3o:",
+        "wash": "Wash Posi\u00e7\u00e3o:",
+        "time": "Dura\u00e7\u00e3o:",
+        "timedetails": "A quantidade de tempo (em milissegundos) que devemos esperar por um movimento atrav\u00e9s da plena up / down intervalo. ** O padr\u00e3o \u00e9 340 **, definido como 0 para n\u00e3o esperar. Movimentos menores vai levar uma quantidade proporcionalmente menor de tempo."
+      }
+    },
+    "advanced": {
+      "steppers": {
+        "title": "X / Y Steppers",
+        "invertx": "Inverter eixo X:",
+        "inverty": "Inverter eixo Y:",
+        "invertdetail": "No caso de um de seus motores se move para tr\u00e1s.",
+        "buffer": {
+          "title": "Tamp\u00e3o Smoothing:",
+          "detail": "Remove o tempo de dura\u00e7\u00e3o de retorno de chamada API, as for\u00e7as de tamponamento e suavizando as chamadas posi\u00e7\u00f5es subseq\u00fcentes. O padr\u00e3o \u00e9 20 ms ** **. Os valores negativos adicionar atraso extra. Apenas aumentar se a impress\u00e3o est\u00e1 nervosa.",
+          "hover": "Mover para a direita para mais offset (liso), partiu para offset negativo (jerky)"
+        },
+        "swap": "Swap de X para Y:",
+        "swapdetail": "No caso de voc\u00ea ter ligado acidentalmente Motor 1 Motor 2 onde \u00e9 suposto ir."
+      },
+      "misctitle": "Diversos",
+      "modes": {
+        "title": "Modos",
+        "detail": "Ativar ou desativar os modos RoboPaint experimentais",
+        "remoteprint": {
+          "title": "Pintura remoto:",
+          "detail": "Permite configurado corretamente aplica\u00e7\u00f5es remotas para enviar gr\u00e1ficos para RoboPaint para automaticamente ser impresso. Para que isso funcione fora desse computador, a caixa de sele\u00e7\u00e3o \"S\u00f3 permitir conex\u00f5es a partir deste computador\" abaixo deve ser desmarcada ** **."
+        }
+      },
+      "openlast": "Abra \u00faltimo projeto na inicializa\u00e7\u00e3o:",
+      "bottype": {
+        "title": "Tipo de impress\u00e3o bot ligado:",
+        "hover": "Lista Bot Apoiado",
+        "detail": "RoboPaint foi feita para o WaterColorBot, mas porque ele \u00e9 baseado no CNC Servidor pode falar com qualquer bot que ele suporta! ** Mudan\u00e7a requer reinicializa\u00e7\u00e3o App. **",
+        "warning": "Bot selecionado incompat\u00edvel com ferramentas de impress\u00e3o."
+      },
+      "api": {
+        "title": "API Servidor",
+        "server": "Servidor em",
+        "detail": "Ao executar aplicativos suportados, este seria o IP do servidor ea porta para entrar no app. ** Mudan\u00e7a requer reinicializa\u00e7\u00e3o App. **"
+      },
+      "httplocalonly": {
+        "title": "S\u00f3 permitir conex\u00f5es a partir deste computador:",
+        "detail": "Desmarque essa para se conectar \u00e0 API CNCServer em RoboPaint de outros dispositivos. ** Mudan\u00e7a requer reinicializa\u00e7\u00e3o App. **"
+      }
+    }
+  }
+}
