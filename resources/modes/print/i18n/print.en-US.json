@@ -1,33 +1,8 @@
 {
   "_meta": {
-    "creator": "rogerfachini",
-    "target": "en-US",
-    "release": "0.9.5"
-  },
-
-  "info": {
-    "word": "Print",
-    "description": "Painting Mode: Print your drawing!",
-    "title": "Automatic Paint",
-    "detail": "Automatically paint a given well formed SVG file."
-  },
-  
-  "control": {
-    "name": "Auto-paint",
-    "title": "Control",
-    "start": "Start",
-    "cancel": "Cancel Print",
-    "brush": "Brush",
-    "park": "Park Home",
-    "disable": "Unlock Motors",
-    
-    "detail": {
-      "start": "Click to start painting your picture!",  
-      "cancel": "Cancel current print job.",
-      "park": "Move the carriage back to the home position",
-      "disable": "Raise brush and Unlock (disable) stepper motors, so that you can move the carriage by hand.",
-    }
-    
-    
+    "creator": "techninja",
+    "target": "en-us",
+    "release": "0.8.5"
   }
+
 }
