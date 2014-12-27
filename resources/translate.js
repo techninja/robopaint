@@ -134,7 +134,19 @@ function translatePage() {
     $('[data-i18n]').i18n();
     setVersion();
   });
+markupParse();
 }
+
+/**
+ * DRY helper function for markup parsing
+ */
+
+function markupParse(){
+  //  Apply bold details to text.
+  $('aside').each(function(){
+    $(this).html($(this).text().replace(/\*\*(\S(.*?\S)?)\*\*/gm, '<b>$1</b>'));
+  });
+
 
 /**
  * DRY helper function to set the version text
@@ -180,10 +192,7 @@ function updateLang() {
 
   getColorsets(); // Reload and reparse colorsets
 
-  // Apply bolding to details text
-  $('aside').each(function(){
-    $(this).html($(this).text().replace(/\*\*(\S(.*?\S)?)\*\*/gm, '<b>$1</b>'));
-  });
+  markupParse();
 }
 
 
