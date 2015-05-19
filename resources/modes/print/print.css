@@ -440,3 +440,25 @@ body.print-auto #buttons button.normal {
 .icon-print:before { content: '\e806'; } /* '' */
 .icon-download-cloud:before { content: '\e80e'; } /* '' */
 .icon-home:before { content: '\e801'; } /* '' */
+
+.modal-dialog {
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 9999;
+  transition: opacity 400ms ease-in;
+  pointer-events: none;
+}
+
+.modal-dialog > div {
+  width: 400px;
+  position: relative;
+  margin: 10% auto;
+  padding: 5px 20px 13px 20px;
+  border-radius: 10px;
+  background: -webkit-linear-gradient(#F2F2F2, #CBCBCB);
+}
