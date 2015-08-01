@@ -30,9 +30,20 @@ $(function() {
           .text(robopaint.t('common.action.start'));
         $('#buttons button.normal').prop('disabled', false); // Enable options
         $('#cancel').prop('disabled', true); // Disable the cancel print button
+        $("#processing-dialog").hide();
         break;
     }
   });
+
+  if (robopaint.cncserver.api.server.domain == 'localhost') {
+    robopaint.cncserver.bufferUpdateTrigger = bufferUpdateEvent;
+  } else {
+    robopaint.socket.on('buffer update', bufferUpdateEvent);
+  }
+
+function bufferUpdateEvent() {
+    $("#processing-dialog").hide();
+}
 
   // Fit the canvas and other controls to the screen size
   responsiveResize();
@@ -73,6 +84,7 @@ $(function() {
 
       // With nothing in the queue, start autopaint!
       if (cncserver.state.buffer.length === 0) {
+        $("#processing-dialog").show()
         $('#pause')
           .removeClass('ready')
           .attr('title', t("status.pause"))
