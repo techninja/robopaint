@@ -274,22 +274,32 @@ module.exports = function(paper) {
     runPath: function(path) {
       mode.run('up');
       var isDown = false;
-      _.each(path.segments, function(seg){
+
+      var overshoot = robopaint.settings.strokeovershoot * 4;  // Get the overshoot value
+      var overshootPath = path.clone(); // Make a copy of the origional path 
+      overshootPath.remove();           // Do not display the copy
+
+      // This will add an overshoot to each segment in the path and draw it,
+      // to account for bend in a brush or other tool. This loop works by
+      // finding the tangent of the line at the midpoint of the current segment,
+      // and multpilying the tangent by the overshoot setting to get the offset
+      // as a vector and add it to the original point to add in the overshoot
+      for(var i = 1; i < path.segments.length; i++) {
+        var offset = (path.getOffsetOf(path.segments[i - 1].point) + path.getOffsetOf(path.segments[i].point)) / 2;
+
+        var tangent = path.getTangentAt(offset).multiply(overshoot);
+        var point = path.segments[i].point;
+
+        overshootPath.segments[i].point = point.add(tangent);
+      }
+
+      _.each(overshootPath.segments, function(seg){
         mode.run('move', {x: seg.point.x, y: seg.point.y});
         if (!isDown) {
           mode.run('down');
           isDown = true;
         }
       });
-
-
-      // Extend the last point to account for brush bend
-      if (robopaint.settings.strokeovershoot > 0) {
-        var point = path.lastSegment.point;
-        var m = robopaint.settings.strokeovershoot * 4;
-        point = point.add(path.getTangentAt(path.length).multiply(m));
-        mode.run('move', {x: point.x, y: point.y});
-      }
 
       mode.run('up');
     },
