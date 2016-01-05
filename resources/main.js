@@ -270,11 +270,6 @@ function bindMainControls() {
 
     var $target = $(e.target);
 
-    // Don't do anything if already selected
-    if ($target.is('.selected')) {
-      return false;
-    }
-
     targetMode = $target;
     checkModeClose(false, e.target.id.split('-')[1]);
   });
@@ -348,10 +343,6 @@ function bindMainControls() {
  *   The mode's machine name. NOTE: Does no sanity checks!
  */
 robopaint.switchMode = function(mode, callback) {
-  if (appMode == mode) { // Don't switch modes if already there
-    return;
-  }
-
   appMode = mode; // Set the new mode
 
   $target = $('a#bar-' + mode);

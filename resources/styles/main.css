@@ -315,7 +315,6 @@ body.home #bar a:hover.selected{
   background-color: rgb(92, 175, 255);
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
-  cursor: default;
 }
 
 #bar a.mode {
