@@ -261,6 +261,39 @@ function bindMainControls() {
     startSerial();
   });
 
+  // Bind the external server connection button functionality
+  $('button.external').click(function(e){
+    if ($('div.external').is(':visible')){
+      $('div.external').slideUp('slow');
+    } else {
+      $('div.external').slideDown('slow');
+    }
+  });
+
+  $('button#external-go').click(function(e){
+    var $stat = $('#external-status');
+
+    $stat.text('Connecting...');
+
+    // Setup the server location
+    robopaint.cncserver.api.server.domain = $('#external-domain').val();
+    robopaint.cncserver.api.server.port = $('#external-port').val();
+
+    // Try to get the pen status...
+    robopaint.cncserver.api.pen.stat(function(data) {
+      if (data === false) {
+        $stat.text('Connection failed. Check that your port/domain is corrent and that this computer is connected to the same network. Click GO to try again.')
+        robopaint.cncserver.api.server.domain = 'localhost';
+        robopaint.cncserver.api.server.port = '4242';
+      } else {
+        $stat.text('Connected!');
+        $options.slideUp('slow');
+        $('button.continue').click();
+        robopaint.statedata.external = true;
+      }
+    });
+
+  });
 
   window.onbeforeunload = onClose; // Catch close event
 

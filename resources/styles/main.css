@@ -389,6 +389,15 @@ body.home #bar span.right {
   padding-left: 0.5em;
 }
 
+/* External server connection options */
+body.home div.external {
+  font-size: 0.6em;
+}
+
+body.home div.external status {
+  font-style: italic;
+}
+
 /* Semi-modal alert status message */
 body.home h1 {
   padding: 11px;
