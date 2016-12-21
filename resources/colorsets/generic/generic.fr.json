@@ -1,0 +1,21 @@
+[{
+  "type": "Générique",
+  "name": "Standard",
+  "media": "Aquarelle",
+  "weight": -10,
+  "description": "Utilisez ce modèle avec les aquarelles inclus avec votre WaterColorBot.",
+  "styles" : {
+    "src" : "standard.css",
+    "baseClass": "generic-standard"
+  },
+  "colors": [
+    {"Noir": "#000000"},
+    {"Rouge": "#FF0000"},
+    {"Orange": "#FFA500"},
+    {"Jaune": "#FFFF00"},
+    {"Vert": "#008000"},
+    {"Bleu": "#0000FF"},
+    {"Violet": "#800080"},
+    {"Marron": "#8B4513"}
+  ]
+}]
