@@ -1,8 +1,13 @@
 /*
  * @file Holds all RoboPaint GLOBAL settings specific configuration, binding and
  * handler code. If a new setting wants to show up in the application, in needs
- * to have its markup added in main.settings.inc.html. This may all eventually move
- * to a more centralized singluar configuration file ... but not yet. ;)
+ * to have its markup added in main.settings.inc.html. This may all eventually
+ * move to a more centralized singluar configuration file ... but not yet. ;)
+ */
+
+// TODO: Limit the number of random globals going on here. :P
+/* globals window, _, cncserver, robopaint, localStorage, $, initializing,
+setModal, rpRequire, paper, homeVis, mainWindow, appMode, $subwindow, isModal,
  */
 
 /**
@@ -81,11 +86,11 @@ function loadSettings() {
   // Allow machine specific overrides of initial default settings
   settingsDefaultAlter(robopaint.settings);
 
-  // Are there existing settings from a previous run? Mesh them into the defaults
+  // Are there existing settings from a previous run? Mesh into the defaults.
   if (localStorage[robopaint.utils.settingsStorageKey()]) {
     var s = robopaint.utils.getSettings();
     for (var key in robopaint.settings) {
-      if (typeof s[key] != 'undefined' && s[key] !== null) {
+      if (typeof s[key] !== 'undefined' && s[key] !== null) {
         robopaint.settings[key] = s[key];
       }
     }
@@ -103,7 +108,7 @@ function loadSettings() {
         }
         break;
       default:
-        if ($input.attr('type') == 'checkbox') {
+        if ($input.attr('type') === 'checkbox') {
           $input.prop('checked', robopaint.settings[key]);
         } else {
           $input.val(robopaint.settings[key]);
@@ -162,7 +167,7 @@ $(robopaint).on('settingsComplete', function(){
   addSettingsRangeValues(); // Add in the range value displays
 
   // Clear last used image
-  if (robopaint.settings.openlast == 0) delete localStorage["svgedit-default"];
+  if (robopaint.settings.openlast === 0) delete localStorage["svgedit-default"];
 });
 
 /**
@@ -241,11 +246,12 @@ function bindSettingsControls() {
     var $input = $(this);
     var pushKey = [];
     var pushVal = '';
+    var name = '';
 
     // Do this first as switch case can't use indexOf
     // Update available modes
     if (this.id.indexOf('modeenable') !== -1) {
-      var name = this.id.replace('modeenable', '');
+      name = this.id.replace('modeenable', '');
       var enabled = $input.is(':checked');
       robopaint.settings.enabledmodes[name] = enabled;
       $('#bar-' + name).toggleClass('hidden', !enabled);
@@ -270,19 +276,22 @@ function bindSettingsControls() {
       case 'servoup':
       case 'servopaint':
       case 'servowash':
-        var name = this.id.substr(5);
+        name = this.id.substr(5);
 
         // Shim to translate robopaint name to cncserver name
-        if (name == "paint") name = 'draw';
+        if (name === "paint") name = 'draw';
 
         // Save settings
-        cncserver.conf.bot.set('servo:presets:' + name, parseFloat($input.val()/10));
+        cncserver.conf.bot.set(
+          'servo:presets:' + name, parseFloat($input.val()/10)
+        );
 
         // On input with nothing in the buffer allow active change of the bot.
         // On "change" of sliders, the user has finished sliding, we can reset
         // the height back to UP. Allows changing while paused.
         var state = robopaint.cncserver.state;
-        if (!initializing && (state.bufferList.length === 0 || state.process.paused)) {
+        if (!initializing &&
+            (state.bufferList.length === 0 || state.process.paused)) {
           if (e.type === 'change') {
             cncserver.setHeight('up', null, state.process.paused);
           } else {
@@ -336,30 +345,32 @@ function bindSettingsControls() {
         pushVal = parseInt($input.val());
         break;
       case 'penmode':
+        var v = parseInt($input.val(), 10);
+
         // No paint?
-        toggleDisableSetting(
+        /*toggleDisableSetting(
           '#showcolortext, #colorset',
-          ($input.val() == 2 || $input.val() == 0),
+          (v === 2 || v === 0),
           robopaint.t('settings.output.penmode.warningPaint')
-        );
+        );*/
 
         // No nothing!
         toggleDisableSetting(
           '#maxpaintdistance, #refillmode, #refillaction, #maxpaint',
-          $input.val() != 3,
+          v !== 3,
           robopaint.t('settings.output.penmode.warningAll')
         );
 
         robopaint.settings[this.id] = $input.val();
         break;
       case 'bottype': // Bot type change! Not a real setting
-        localStorage["currentBot"] = JSON.stringify({
+        localStorage.currentBot = JSON.stringify({
           type: $input.val(),
           name: $('#bottype option:selected').text()
         });
         return;
       default: // Nothing special to set, just change the settings object value
-        if ($input.attr('type') == 'checkbox') {
+        if ($input.attr('type') === 'checkbox') {
           robopaint.settings[this.id] = $input.is(':checked');
         } else {
           robopaint.settings[this.id] = $input.val();
@@ -367,26 +378,26 @@ function bindSettingsControls() {
     }
 
     // Enable only for debug windows (users can close them by hand).
-    if (this.id == 'rpdebug' && $input.is(':checked')) {
+    if (this.id === 'rpdebug' && $input.is(':checked')) {
       mainWindow.openDevTools();
       if (appMode !== 'home') $subwindow[0].openDevTools();
     }
 
     // Update paint sets when changes made that would effect them
-    if (this.id == 'colorset' || this.id == 'showcolortext') {
+    if (this.id === 'colorset' || this.id === 'showcolortext') {
       updateColorSetSettings();
       cncserver.pushToMode('updateMediaSet');
     }
 
     // Update visibility of paintsets on penmode change
-    if (this.id == 'penmode') {
+    if (this.id === 'penmode') {
       cncserver.pushToMode('updatePenMode');
     }
 
     // If there's a key to override for CNC server, set it
     if (pushKey.length) {
       robopaint.settings[this.id] = pushVal;
-      if (pushKey[0] == 'b') { // Bot!
+      if (pushKey[0] === 'b') { // Bot!
         cncserver.conf.bot.set(pushKey[1], pushVal);
       } else { // Global conf
         cncserver.conf.global.set(pushKey[1], pushVal);
@@ -400,21 +411,21 @@ function bindSettingsControls() {
   });
 
   // Done Button
-  $('#settings-done').click(function(e) {
+  $('#settings-done').click(function() {
     setSettingsWindow(false);
   });
 
   // Keyboard shortcut for exiting settings
   $(window).keydown(function (e){
     if (isModal && $('#settings').is(':visible')) {
-      if (e.keyCode == 27) {
+      if (e.keyCode === 27) {
         $('#settings-done').click();
       }
     }
   });
 
   // Reset button
-  $('#settings-reset').click(function(e) {
+  $('#settings-reset').click(function() {
     if (confirm(robopaint.t('settings.buttons.reset.confirm'))) {
       // Disable any non-core modes
       $('.advanced-modes input').prop('checked', false).change();
@@ -518,7 +529,9 @@ function addSettingsRangeValues() {
           // Display as Centimeters (2.24076923 mm per step!)
           num = Math.round((num / 224.076923) * 10) / 10;
           num = robopaint.t('common.metric.cm', {count: num}) + ' / ' +
-            robopaint.t('common.imperial.in', {count: (Math.round((num / 2.54) * 10) / 10)});
+            robopaint.t('common.imperial.in', {
+              count: (Math.round((num / 2.54) * 10) / 10)
+            });
           dosep = false;
           break;
         case 'servoup':
@@ -551,7 +564,7 @@ function addSettingsRangeValues() {
       }
 
       // Format translated text with
-      if (['servotime', 'latencyoffset'].indexOf(this.id) != -1) {
+      if (['servotime', 'latencyoffset'].indexOf(this.id) !== -1) {
         post = '';
         num = robopaint.t('common.time.ms', {count: num});
       }
@@ -562,7 +575,7 @@ function addSettingsRangeValues() {
     }).change();
 
     $r.addClass('processed').after($l);
-  })
+  });
 }
 
 /**
@@ -578,17 +591,16 @@ function updateColorSetSettings() {
 
   // Add Sortable color names/colors
   $colors.empty();
-  for (var i in set.colors) {
-    if (i == set.colors.length-1) break; // Ignore the last value
+  _.each(set.colors, function(color) {
     $('<li>')
       .append(
         $('<span>')
           .addClass('color')
-          .css('background-color', set.colors[i].color['HEX'])
+          .css('background-color', color.color.HEX)
           .text(' '),
-        $('<label>').text(set.colors[i].name)
+        $('<label>').text(color.name)
       ).appendTo($colors);
-  }
+  });
 
   // Add metadata
   var meta = 'type name description media'.split(' ');

@@ -42,11 +42,11 @@
 
 <div id="loader">...</div>
 
-<h1 class="loading">
+<h1 id="connection" class="loading">
   <b data-i18n="status.start">&#8987;</b>
   <div class="options hidden">
     <span data-i18n>status.question</span>
-    <div>
+    <div class="options">
       <button class="continue normal" data-i18n>status.button.continue</button>
       <button class="reconnect normal" data-i18n>status.button.retry</button>
       <button class="external normal" data-i18n>external.title</button>
@@ -61,6 +61,16 @@
         <status id="external-status" data-i18n>external.status.wait</status>
       </div>
     </div>
+  </div>
+</h1>
+
+<h1 id="manualswap" class="loading hidden">
+  <b data-i18n>libs.manual.notice</b>
+  <aside data-i18n>libs.manual.info</aside>
+  <div class="options">
+    <button data-bind-keycode="27" class="cancel normal" data-i18n="[title]libs.manual.options.cancel.info;libs.manual.options.cancel.title"></button>
+    <button data-bind-keycode="32" class="toggle normal" data-i18n="[title]libs.manual.options.toggle.info;libs.manual.options.toggle.title"></button>
+    <button data-bind-keycode="13" class="continue normal" data-i18n="[title]libs.manual.options.continue.info;libs.manual.options.continue.title"></button>
   </div>
 </h1>
 

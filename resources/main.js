@@ -3,6 +3,7 @@
  * central cncserver object to control low-level non-restful APIs, and general
  * "top-level" UI initialization for settings.
  */
+/* globals window, document, $*/
 
 // Must use require syntax for including these libs because of node duality.
 window.$ = window.jQuery = require('jquery');
@@ -73,7 +74,7 @@ try {
   rpRequire('mediasets') // Colors and other media specific details.
 } catch(e) {
   $(function(){
-    $('body.home h1').attr('class', 'error').text('Error During Pre-Initialization:')
+    $('#connection').attr('class', 'error').text('Error During Pre-Initialization:')
       .append($('<span>').addClass('message').html("<pre>" + e.message + "\n\n" + e.stack + "</pre>"));
     console.error(e.stack);
   });
@@ -117,15 +118,15 @@ function startInitialization() {
   initHistoryload();
 
   // Prep the connection status overlay
-  $stat = $('body.home h1');
-  $options = $('.options', $stat);
+  $stat = $('#connection');
+  $options = $('.options:first', $stat);
 
   // Actually try to init the connection and handle the various callbacks
   startSerial();
 
   bindMainControls(); // Bind all the controls for the main interface
  } catch(e) {
-   $('body.home h1').attr('class', 'error').text('Error During Initialization:')
+   $('#connection').attr('class', 'error').text('Error During Initialization:')
      .append($('<span>').addClass('message').html("<pre>" + e.message + "\n\n" + e.stack + "</pre>"));
    console.error(e.stack);
  }
@@ -234,8 +235,7 @@ function destroySubwindow(callback) {
  */
 function bindMainControls() {
   // Bind the continue/simulation mode button functionality
-  $('button.continue', $options).click(function(e){
-    $stat.fadeOut('slow');
+  $('#connection button.continue').click(function(e){
     cncserver.continueSimulation();
     cncserver.serialReadyInit();
 
@@ -251,18 +251,18 @@ function bindMainControls() {
       initializing = false;
     }
 
-    setModal(false);
+    setModal(false, '#connection');
   });
 
   // Bind the reconnect button functionality
-  $('button.reconnect').click(function(e){
+  $('#connection button.reconnect').click(function() {
     // Reconnect! Resets status and tries to start again
     $options.hide();
     startSerial();
   });
 
   // Bind the external server connection button functionality
-  $('button.external').click(function(e){
+  $('#connection button.external').click(function() {
     if ($('div.external').is(':visible')){
       $('div.external').slideUp('slow');
     } else {
@@ -271,7 +271,7 @@ function bindMainControls() {
   });
 
   robopaint.statedata.external = false;
-  $('button#external-go').click(function(e){
+  $('#connection button#external-go').click(function() {
     var $stat = $('#external-status');
 
     $stat.text(robopaint.t('external.status.connect'));
@@ -293,6 +293,37 @@ function bindMainControls() {
         $('button.continue').click();
       }
     });
+  });
+
+  // Bind visible buttons to keystrokes ========================================
+  $(document).keydown(function(e) {
+    $('button[data-bind-keycode="' + e.keyCode + '"]:visible:not(:focus)').click();
+  });
+
+  // Bind buttons for manual swap ==============================================
+  $('#manualswap button').click(function() {
+    var $this = $(this);
+    if ($this.is('.toggle')) {
+      $this.toggleClass('pen-down');
+      if ($this.is('.pen-down')) {
+        cncserver.cmd.run('down', true);
+      } else {
+        cncserver.cmd.run('up', true);
+      }
+      return;
+    }
+
+    // Switch between the other two button options that close the window.
+    if ($this.is('.cancel')) {
+      // Cancel the print... then go home.
+      cncserver.fullCancel();
+      robopaint.switchMode('home');
+    } else if ($this.is('.continue')) {
+      // Run resume immediately.
+      cncserver.cmd.run('resume', true);
+    }
+    // Hide the window.
+    setModal(false, '#manualswap');
   });
 
   window.onbeforeunload = onClose; // Catch close event
@@ -509,8 +540,7 @@ function startSerial(){
       },
       connect: function() {
         setMessage('status.success', 'success');
-        $stat.fadeOut('slow');
-        setModal(false);
+        setModal(false, '#connection');
 
         // If caught on startup...
         if (initializing) {
@@ -526,14 +556,13 @@ function startSerial(){
         initSocketIO();
       },
       disconnect: function() {
-        setModal(true);
-        $stat.show();
+        setModal(true, '#connection');
         setMessage('status.disconnect', 'error');
         $options.slideDown();
       }
     });
   } catch(e) {
-   $('body.home h1').attr('class', 'error').text('Error During Serial Start:')
+   $('#connection').attr('class', 'error').text('Error During Serial Start:')
      .append($('<span>').addClass('message').html("<pre>" + e.message + "\n\n" + e.stack + "</pre>"));
    console.log(e.stack);
  }
@@ -602,8 +631,12 @@ function initToolTips() {
         target: $this, // my target,
         viewport: $(window)
       },
+      hide: {
+          event: 'click mouseleave'
+      },
       events: {
         render: function(event, api) {
+          if (!$this.data('i18n')) return;
           // Extract the title translation ID
           var transIDs = $this.data('i18n').split(';');
           var titleTransID = transIDs[0].split(']')[1];
@@ -815,8 +848,8 @@ function getColorsets() {
     $('#colorset').append(
       $('<option>')
         .attr('value', setIndex)
-        .text(c.type + ' - ' + c.name)
-        .prop('selected', setIndex == robopaint.settings.colorset)
+        .text(c.media + ' - ' + c.type + ' - ' + c.name)
+        .prop('selected', setIndex === robopaint.settings.colorset)
         .prop('disabled', !c.enabled) // Disable unavailable options
     );
   });
@@ -1049,12 +1082,15 @@ function setMessage(transKey, mode, append){
  *
  * @param {Boolean} toggle
  *   True for modal overlay on, false for off.
+ * @param {string} selectors
+ *   Selectors to add to the fadeIn/Out.
  */
-function setModal(toggle){
+function setModal(toggle, selectors){
+  selectors = selectors ? [selectors, '#modalmask'] : ['#modalmask'];
   if (toggle) {
-    $('#modalmask').fadeIn('slow');
+    $(selectors.join(', ')).fadeIn('slow');
   } else {
-    $('#modalmask').fadeOut('slow');
+    $(selectors.join(', ')).fadeOut('fast');
   }
 
   isModal = toggle;

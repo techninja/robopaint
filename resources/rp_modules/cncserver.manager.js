@@ -2,10 +2,7 @@
  * @file Manage clientside state, messages, progress bar and status, and all
  * cncserver specific communication from modes to the one instance of the API.
  */
-var $ = window.$;
-var _ = window._;
-var robopaint = window.robopaint;
-var cncserver = robopaint.cncserver;
+/* globals $, _, robopaint, cncserver, i18n, setModal  */
 var modeWindow = {};
 
 cncserver.state = {
@@ -28,7 +25,7 @@ cncserver.state = {
 
 // When the subwindow has been (re)created.
 $(robopaint).on('subwindowReady', function(){
-  modeWindow = window.$subwindow[0]; // Set to actual webview
+  modeWindow = $subwindow[0]; // Set to actual webview
 
   // Bind for client messages
   modeWindow.addEventListener('ipc-message', function(event){
@@ -82,6 +79,7 @@ $(robopaint).on('socketIOComplete', function(){
   }
   robopaint.socket.on('message update', messageUpdateEvent);
   robopaint.socket.on('callback update', callbackEvent);
+  robopaint.socket.on('manualswap trigger', manualSwapTrigger);
 });
 
 // CNCServer Buffer Change events (for pause, update, or resume)
@@ -139,6 +137,39 @@ function bufferUpdateEvent(b){
   }
 }
 
+/**
+ * Tool manual swap event trigger. When a queued tool change to a manual tool
+ * is reached, the queue will be paused and this will get called. We need to
+ * tell the use to get ready and actually do the manual swap. When done, we just
+ * resume the queue.
+ *
+ * @param  {object} data
+ *   Currently only supports one property: index, containing the originally sent
+ *   tool index (color) to be used to tell the user what they should change to.
+ */
+function manualSwapTrigger(data) {
+  // Alert user.
+  var shell = require('electron').shell;
+  shell.beep();
+
+  // Unlock immediately.
+  cncserver.cmd.run('unlock', true);
+
+  // Translate window text based on given implement.
+  var set = robopaint.media.currentSet;
+  var name = set.colors[data.index].name;
+  var type = set.media.toLowerCase();
+  $('#manualswap b').text(
+    i18n.t('libs.manual.notice', {color: name.toLowerCase(), type: type})
+  );
+  $('#manualswap button.continue').text(
+    i18n.t('libs.manual.options.continue.title', {color: name})
+  );
+
+  // Show window and overlay.
+  setModal(true, '#manualswap');
+}
+
 // Pen update event callback
 function penUpdateEvent(actualPen){
   actualPen.absCoord = cncserver.utils.getStepstoAbsCoord(actualPen);
@@ -178,36 +209,7 @@ $(robopaint).on('settingsUpdate', function(){
 // Handle CNCServer requests from mode windows.
 function handleClientCmd(type, data) {
   switch(type) {
-    case 'pauseTillEmpty':
-      if (data === true) { // Starting
-        if (!cncserver.state.pausingTillEmpty) {
-          cncserver.state.pausingTillEmpty = true;
-          cncserver.api.buffer.pause();
-        }
-      } else { // Finishing (initialize check)
-        if (cncserver.state.pausingTillEmpty) {
-          var max = cncserver.sendBuffer.length;
-          var last = max;
-          var val = 0;
-          cncserver.status(robopaint.t('status.pausetillempty'));
-          cncserver.progress({max: max, val: val});
-          cncserver.state.pausingTillEmpty = true;
-          var poll = setInterval(function () {
-            if (cncserver.sendBuffer.length === 0) { // Sendbuffer is empty! Resume.
-              cncserver.api.buffer.resume(function(){
-                clearInterval(poll);
-                cncserver.state.pausingTillEmpty = false;
-              });
-            } else {
-              val+= last - cncserver.sendBuffer.length;
-              last = cncserver.sendBuffer.length;
-              cncserver.status(robopaint.t('status.pausetillempty') + ' ' + val + '/' + max);
-              cncserver.progress({val: val, max: max});
-            }
-          }, 200);
-        }
-      }
-      break;
+
     default:
       console.log('CNC clientcmd', args);
   }
@@ -269,6 +271,21 @@ cncserver.progress = function(p) {
 
   $('#status .progress-wrapper label').text($prog.val() + '/' + $prog.attr('max'));
   popoutStatus();
+};
+
+/**
+ * Fully cancel anything that's going on.
+ */
+cncserver.fullCancel = function() {
+  cncserver.cmd.run([
+    'clear',
+    'resume',
+    'park',
+    ['progress', 0, 1],
+    'localclear'
+    // As a nice reminder, localclear MUST be last, otherwise the commands
+    // after it will be cleared before being sent :P
+  ], true); // As this is a forceful cancel, shove to the front of the queue
 };
 
 // TODO: Provide something for the parent script?
